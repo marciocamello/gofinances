@@ -11,7 +11,7 @@ import {
 
 import theme from './src/global/styles/theme';
 
-import { Dashboard } from './src/screens/Dashboard';
+import { CategorySelect } from './src/screens/CategorySelect';
 import { StatusBar } from 'react-native';
 
 export default function App() {
@@ -32,7 +32,7 @@ export default function App() {
                 barStyle="light-content"
                 backgroundColor={theme.colors.primary}
             />
-            <Dashboard />
+            <CategorySelect />
         </ThemeProvider>
     );
 }
