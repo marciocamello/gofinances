@@ -11,7 +11,7 @@ import {
 
 import theme from './src/global/styles/theme';
 
-import { CategorySelect } from './src/screens/CategorySelect';
+import { Register } from './src/screens/Register';
 import { StatusBar } from 'react-native';
 
 export default function App() {
@@ -32,7 +32,7 @@ export default function App() {
                 barStyle="light-content"
                 backgroundColor={theme.colors.primary}
             />
-            <CategorySelect />
+            <Register />
         </ThemeProvider>
     );
 }

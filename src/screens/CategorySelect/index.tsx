@@ -14,10 +14,13 @@ import {
     Footer,
 } from './styles';
 
-type Category = typeof categories[number];
+interface Category {
+    key: string;
+    name: string;
+};
 
-interface Props extends Category {
-    category: string;
+interface Props {
+    category: Category;
     setCategory: (category: Category) => void;
     closeSelectCategory: () => void;
 }
@@ -27,10 +30,15 @@ export function CategorySelect({
     setCategory,
     closeSelectCategory
 }: Props) {
+
+    function handleCategorySelect(category: Category) {
+        setCategory(category);
+    }
+
     return (
         <Container>
             <Header>
-                <Title>Category</Title>
+                <Title>Categories</Title>
             </Header>
 
             <FlatList
@@ -41,20 +49,25 @@ export function CategorySelect({
                 }}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <Category>
+                    <Category
+                        onPress={() => handleCategorySelect(item)}
+                        isActive={category.key === item.key}
+                    >
                         <Icon name={item.icon} />
                         <Name>{item.name}</Name>
                     </Category>
-                )}
+                )
+                }
                 ItemSeparatorComponent={() => <Separator />}
             />
 
-            <Footer>
+            < Footer >
                 <Button
                     title='Select'
+                    onPress={closeSelectCategory}
                 />
-            </Footer>
+            </Footer >
 
-        </Container>
+        </Container >
     );
 }
