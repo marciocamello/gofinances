@@ -16,7 +16,7 @@ import { StatusBar } from 'react-native';
 
 export default function App() {
 
-    const [fontsLoaded] = useFonts({
+    let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
         Poppins_700Bold,
