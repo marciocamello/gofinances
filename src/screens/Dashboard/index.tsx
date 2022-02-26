@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { HighlightCard } from '../../components/HighlightCard';
 import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { currency, dataKey, language } from '../../utils/data';
 
 import {
     Container,
@@ -16,48 +19,54 @@ import {
     Transactions,
     TransactionsList,
     Title,
+    LogoutButton
 } from './styles';
+import { categories } from '../../utils/categories';
 
 export interface DataListProps extends TransactionCardProps {
     id: string;
 }
 
 export function Dashboard() {
-    const data: DataListProps[] = [
-        {
-            id: '1',
-            type: 'income',
-            title: "Salary",
-            amount: "R$ 17.400,00",
-            category: {
-                name: 'Salary',
-                icon: 'dollar-sign',
-            },
-            date: "13/04/2020",
-        },
-        {
-            id: '2',
-            type: 'expense',
-            title: "Food",
-            amount: "R$ 59,00",
-            category: {
-                name: 'Salary',
-                icon: 'coffee',
-            },
-            date: "10/04/2020",
-        },
-        {
-            id: '3',
-            type: 'income',
-            title: "Ecommerce",
-            amount: "R$ 1.400,00",
-            category: {
-                name: 'Salary',
-                icon: 'shopping-bag',
-            },
-            date: "13/01/2020",
+    const [data, setData] = React.useState<DataListProps[]>([]);
+
+    async function loadTransaction() {
+        const response = await AsyncStorage.getItem(dataKey);
+
+        if (response) {
+
+            const transactions = JSON.parse(response);
+            const transactionsList: DataListProps[] = transactions.map((transaction: TransactionCardProps) => {
+
+                const amount = Number(transaction.amount)
+                    .toLocaleString(language, {
+                        style: 'currency',
+                        currency: currency
+                    });
+
+                const date = Intl.DateTimeFormat(language, {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit'
+                }).format(new Date(transaction.date));
+
+                return {
+                    id: transaction.id,
+                    name: transaction.name,
+                    amount,
+                    type: transaction.type,
+                    category: transaction.category,
+                    date
+                };
+            });
+
+            setData(transactionsList);
         }
-    ];
+    }
+
+    useEffect(() => {
+        loadTransaction();
+    }, []);
 
     return (
         <Container>
@@ -70,7 +79,11 @@ export function Dashboard() {
                             <UserName>Marcio</UserName>
                         </User>
                     </UserInfo>
-                    <Icon name="power" />
+                    <LogoutButton
+                        onPress={() => { }}
+                    >
+                        <Icon name="power" />
+                    </LogoutButton>
                 </UserrWrapper>
             </Header>
 

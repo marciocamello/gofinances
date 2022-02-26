@@ -1,6 +1,13 @@
+import 'react-native-gesture-handler';
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
+import 'intl/locale-data/jsonp/en-US';
+import 'intl/locale-data/jsonp/pt-PT';
+
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import AppLoading from 'expo-app-loading';
+import { StatusBar } from 'react-native';
 
 import {
     useFonts,
@@ -11,8 +18,9 @@ import {
 
 import theme from './src/global/styles/theme';
 
-import { Register } from './src/screens/Register';
-import { StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+
+import { AppNavigator } from './src/routes/app.routes';
 
 export default function App() {
 
@@ -28,11 +36,13 @@ export default function App() {
 
     return (
         <ThemeProvider theme={theme}>
-            <StatusBar
-                barStyle="light-content"
-                backgroundColor={theme.colors.primary}
-            />
-            <Register />
+            <NavigationContainer>
+                <StatusBar
+                    barStyle="light-content"
+                    backgroundColor={theme.colors.primary}
+                />
+                <AppNavigator />
+            </NavigationContainer>
         </ThemeProvider>
     );
 }

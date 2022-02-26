@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
     Alert,
@@ -10,11 +10,16 @@ import {
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import uuid from 'react-native-uuid';
+import { useNavigation } from '@react-navigation/native';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
 import { Button } from '../../components/Forms/Button';
 import { InputForm } from '../../components/Forms/InputForm';
 import { TransactionTypeButton } from '../../components/Forms/TransactionTypeButton';
 import { CategorySelectButton } from '../../components/Forms/CategorySelectButton';
+import { AppRoutesParamList } from '../../routes/app.routes';
 
 import { CategorySelect } from '../CategorySelect';
 
@@ -26,10 +31,12 @@ import {
     Fields,
     TransactionTypes
 } from './styles';
+import { dataKey, defaultCategory } from '../../utils/data';
 
 interface FormData {
     [key: string]: string;
 }
+
 
 const schema = Yup.object().shape({
     name: Yup
@@ -42,18 +49,22 @@ const schema = Yup.object().shape({
         .required('Price is required')
 });
 
+type RegisterNavigationProps = BottomTabNavigationProp<
+    AppRoutesParamList
+>;
+
 export function Register() {
     const [transactionType, setTransactionType] = useState('');
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
-    const [category, setCategory] = useState({
-        key: 'category',
-        name: 'Category',
-    });
+    const [category, setCategory] = useState(defaultCategory);
+
+    const nagivation = useNavigation<RegisterNavigationProps>();
 
     const {
         control,
         handleSubmit,
+        reset,
         formState: {
             errors
         }
@@ -73,7 +84,22 @@ export function Register() {
         setCategoryModalOpen(false);
     }
 
-    function handleRegister(form: FormData) {
+    useEffect(() => {
+        async function loadTransactions() {
+            const transactions = await AsyncStorage.getItem(dataKey);
+            console.log(transactions);
+        }
+
+        loadTransactions();
+
+        async function removeAll() {
+            await AsyncStorage.removeItem(dataKey);
+        }
+
+        //removeAll();
+    }, []);
+
+    async function handleRegister(form: FormData) {
         if (!transactionType) {
             return Alert.alert('Select a transaction type');
         }
@@ -82,14 +108,31 @@ export function Register() {
             return Alert.alert('Select a category');
         }
 
-        const data = {
+        const newTransaction = {
+            id: String(uuid.v4()),
             name: form.name,
             amount: form.amount,
             transactionType,
             category: category.key,
+            date: new Date()
         }
 
-        console.log(data);
+        try {
+            await AsyncStorage.setItem(
+                dataKey,
+                JSON.stringify([...JSON.parse(await AsyncStorage.getItem(dataKey) || '[]'), newTransaction])
+            );
+
+            setTransactionType('');
+            setCategory(defaultCategory);
+            reset();
+
+            nagivation.navigate('List');
+
+        } catch (e) {
+            console.log(e);
+            Alert.alert('Error', 'Something went wrong');
+        }
     }
 
     return (
