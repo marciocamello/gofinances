@@ -8,6 +8,7 @@ import {
 
 import { Dashboard } from '../screens/Dashboard';
 import { Register } from '../screens/Register';
+import { Resume } from '../screens/Resume';
 import { Platform } from 'react-native';
 
 export type AppRoutesParamList = {
@@ -60,7 +61,7 @@ export function AppNavigator() {
             />
             <Screen
                 name="Resume"
-                component={Register}
+                component={Resume}
                 options={{
                     tabBarIcon: ({ color, size }) =>
                         <MaterialIcons
