@@ -18,11 +18,13 @@ import {
 
 import theme from './src/global/styles/theme';
 
-import { NavigationContainer } from '@react-navigation/native';
-
-import { AppNavigator } from './src/routes/app.routes';
+import { Signin } from './src/screens/Signin';
+import { Routes } from './src/routes';
+import { AuthProvider, useAuth } from './src/hooks/auth';
 
 export default function App() {
+
+    const { userStorageLoading } = useAuth();
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -30,19 +32,19 @@ export default function App() {
         Poppins_700Bold,
     });
 
-    if (!fontsLoaded) {
+    if (!fontsLoaded || userStorageLoading) {
         return <AppLoading />;
     }
 
     return (
         <ThemeProvider theme={theme}>
-            <NavigationContainer>
-                <StatusBar
-                    barStyle="light-content"
-                    backgroundColor={theme.colors.primary}
-                />
-                <AppNavigator />
-            </NavigationContainer>
+            <StatusBar
+                barStyle="light-content"
+                backgroundColor={theme.colors.primary}
+            />
+            <AuthProvider>
+                <Routes />
+            </AuthProvider>
         </ThemeProvider>
     );
 }

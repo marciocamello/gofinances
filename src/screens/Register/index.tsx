@@ -20,8 +20,10 @@ import { InputForm } from '../../components/Forms/InputForm';
 import { TransactionTypeButton } from '../../components/Forms/TransactionTypeButton';
 import { CategorySelectButton } from '../../components/Forms/CategorySelectButton';
 import { AppRoutesParamList } from '../../routes/app.routes';
+import { dataKey, defaultCategory } from '../../utils/data';
 
 import { CategorySelect } from '../CategorySelect';
+import { useAuth } from '../../hooks/auth';
 
 import {
     Container,
@@ -31,12 +33,10 @@ import {
     Fields,
     TransactionTypes
 } from './styles';
-import { dataKey, defaultCategory } from '../../utils/data';
 
 interface FormData {
     [key: string]: string;
 }
-
 
 const schema = Yup.object().shape({
     name: Yup
@@ -60,6 +60,7 @@ export function Register() {
     const [category, setCategory] = useState(defaultCategory);
 
     const nagivation = useNavigation<RegisterNavigationProps>();
+    const { user } = useAuth();
 
     const {
         control,
@@ -86,17 +87,11 @@ export function Register() {
 
     useEffect(() => {
         async function loadTransactions() {
-            const transactions = await AsyncStorage.getItem(dataKey);
+            const transactions = await AsyncStorage.getItem(`${dataKey}:transactions_user:${user.id}`);
             console.log(transactions);
         }
 
         loadTransactions();
-
-        async function removeAll() {
-            await AsyncStorage.removeItem(dataKey);
-        }
-
-        //removeAll();
     }, []);
 
     async function handleRegister(form: FormData) {
@@ -119,8 +114,8 @@ export function Register() {
 
         try {
             await AsyncStorage.setItem(
-                dataKey,
-                JSON.stringify([...JSON.parse(await AsyncStorage.getItem(dataKey) || '[]'), newTransaction])
+                `${dataKey}:transactions_user:${user.id}`,
+                JSON.stringify([...JSON.parse(await AsyncStorage.getItem(`${dataKey}:transactions_user:${user.id}`) || '[]'), newTransaction])
             );
 
             setTransactionType('');

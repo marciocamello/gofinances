@@ -12,10 +12,8 @@ import {
 import {
     RFPercentage, RFValue
 } from 'react-native-responsive-fontsize';
-import { FlatList, FlatListProps } from 'react-native';
-
-import { DataListProps } from '.';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import { FlatList, FlatListProps, TouchableOpacity } from 'react-native';
+import { TransactionCardProps } from '../../components/TransactionCard';
 
 export const Container = styled.View`
     flex: 1;
@@ -71,7 +69,7 @@ export const UserName = styled.Text`
     font-family: ${({ theme }) => theme.fonts.bold};
 `;
 
-export const LogoutButton = styled(BorderlessButton)`
+export const LogoutButton = styled(TouchableOpacity)`
     
 `;
 
@@ -107,8 +105,8 @@ export const Title = styled.Text`
 
 export const TransactionsList = styled(
     FlatList as new (
-        props: FlatListProps<DataListProps>
-    ) => FlatList<DataListProps>
+        props: FlatListProps<TransactionCardProps>
+    ) => FlatList<TransactionCardProps>
 ).attrs({
     showsVerticalScrollIndicator: false,
     contentContainerStyle: {

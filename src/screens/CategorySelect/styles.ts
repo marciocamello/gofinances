@@ -29,7 +29,9 @@ export const Title = styled.Text`
     font-size: ${RFValue(18)}px;
 `;
 
-export const Category = styled.TouchableOpacity<CategoryProps>`
+export const Category = styled.TouchableOpacity.attrs({
+    activeOpacity: 0.7
+}) <CategoryProps>`
     width: 100%;
     padding: ${RFValue(15)}px;
 

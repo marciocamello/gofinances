@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Button } from '../../components/Forms/Button';
 import { categories } from '../../utils/categories';
 
@@ -61,7 +61,7 @@ export function CategorySelect({
                 ItemSeparatorComponent={() => <Separator />}
             />
 
-            < Footer >
+            <Footer >
                 <Button
                     title='Select'
                     onPress={closeSelectCategory}
