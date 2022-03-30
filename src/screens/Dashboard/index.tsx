@@ -163,7 +163,6 @@ export function Dashboard() {
         } catch (error) {
             console.log(error);
             Alert.alert('Error signing out', 'An error occurred while signing out');
-        } finally {
             setIsLoading(false);
         }
     }

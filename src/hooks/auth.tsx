@@ -109,7 +109,6 @@ function AuthProvider({ children }: AuthProviderProps) {
     async function signOut() {
         setUser({} as User);
         await AsyncStorage.removeItem(`${dataKey}:users`);
-        console.log('signOut');
     }
 
     return (
