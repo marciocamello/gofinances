@@ -12,7 +12,7 @@
     "dependencies": {
         "@expo-google-fonts/poppins": "^0.2.2",
         "@hookform/resolvers": "^2.8.8",
-        "@react-native-async-storage/async-storage": "~1.15.0",
+        "@react-native-async-storage/async-storage": "^1.17.2",
         "@react-navigation/bottom-tabs": "^6.2.0",
         "@react-navigation/native": "^6.0.8",
         "@react-navigation/stack": "^6.1.1",
@@ -49,6 +49,7 @@
     "devDependencies": {
         "@babel/core": "^7.12.9",
         "@testing-library/jest-native": "^4.0.4",
+        "@testing-library/react-hooks": "^7.0.2",
         "@testing-library/react-native": "^9.1.0",
         "@types/jest": "^27.4.1",
         "@types/mocha": "^9.1.0",
@@ -63,6 +64,7 @@
         "jest-styled-components": "^7.0.8",
         "react-native-svg-transformer": "^1.0.0",
         "react-test-renderer": "17",
+        "ts-jest": "^27.1.4",
         "typescript": "~4.3.5"
     },
     "private": true
