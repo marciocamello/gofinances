@@ -131,7 +131,10 @@ export function Register() {
     }
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <TouchableWithoutFeedback
+            testID='register-screen'
+            onPress={Keyboard.dismiss}
+        >
             <Container>
                 <Header>
                     <Title>Register</Title>
@@ -173,6 +176,7 @@ export function Register() {
                         </TransactionTypes>
 
                         <CategorySelectButton
+                            testID='category-modal-button'
                             title={category.name}
                             onPress={handleOpenSelectCategoryModal}
                         />
@@ -185,6 +189,7 @@ export function Register() {
                 </Form>
 
                 <Modal
+                    testID='category-modal'
                     visible={categoryModalOpen}
                 >
                     <CategorySelect

@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-
-import { Input } from '.';
 import { ThemeProvider } from 'styled-components/native';
+
 import theme from '../../../global/styles/theme';
+import { Input } from '.';
 
 const Providers: React.FC = ({ children }) => {
     return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
